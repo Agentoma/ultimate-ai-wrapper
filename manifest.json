@@ -1,0 +1,118 @@
+{
+  "manifest_version": 3,
+  "name": "Ultimate AI Wrapper",
+  "version": "1.0.0",
+  "description": "Universal AI assistant - Access GPT, Claude, Gemini, Perplexity, Grok in-session. Your ultimate coding buddy for life automation.",
+  
+  "permissions": [
+    "storage",
+    "tabs",
+    "activeTab",
+    "scripting",
+    "commands",
+    "contextMenus",
+    "webNavigation",
+    "clipboardWrite"
+  ],
+  
+  "host_permissions": [
+    "https://chat.openai.com/*",
+    "https://chatgpt.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://www.perplexity.ai/*",
+    "https://x.ai/*",
+    "https://grok.x.ai/*",
+    "<all_urls>"
+  ],
+  
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": [
+        "content/ai-injector.js",
+        "content/sidebar.js"
+      ],
+      "css": ["content/sidebar.css"],
+      "run_at": "document_idle",
+      "all_frames": false
+    },
+    {
+      "matches": [
+        "https://chat.openai.com/*",
+        "https://chatgpt.com/*"
+      ],
+      "js": ["content/providers/chatgpt-adapter.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://claude.ai/*"],
+      "js": ["content/providers/claude-adapter.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://gemini.google.com/*"],
+      "js": ["content/providers/gemini-adapter.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://www.perplexity.ai/*"],
+      "js": ["content/providers/perplexity-adapter.js"],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": ["https://x.ai/*", "https://grok.x.ai/*"],
+      "js": ["content/providers/grok-adapter.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+A",
+        "windows": "Alt+A",
+        "mac": "Alt+A",
+        "linux": "Alt+A"
+      },
+      "description": "Toggle Ultimate AI Wrapper sidebar"
+    },
+    "send-to-all": {
+      "suggested_key": {
+        "default": "Alt+Shift+A"
+      },
+      "description": "Send prompt to all AI models"
+    }
+  },
+  
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "content/sidebar.html",
+        "content/sidebar.css",
+        "icons/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
