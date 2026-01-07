@@ -96,11 +96,8 @@ jobs:
     - name: Create build directory
       run: |
         echo "📦 Creating build package..."
-        mkdir -p build
-        cp -r . build/
-        cd build
-        rm -rf .git .github build
-    
+mkdirmkdir -p build
+        tar --exclude='./build' --exclude='./.git' --exclude='./.github' -cf - . | tar -xf - -C build/ build/.git build/.github    
     - name: Generate build info
       run: |
         echo "ℹ️  Build Information:"
